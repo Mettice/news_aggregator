@@ -41,4 +41,9 @@ ENV/
 
 # OS
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Large media files
+*.mkv
+*.mp4
+*.mov 
