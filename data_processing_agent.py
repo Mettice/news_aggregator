@@ -18,16 +18,40 @@ class DataProcessingAgent(Agent):
 
     def __init__(self):
         super().__init__(
-            name="News Processing Agent",
-            role="News Processor",
-            backstory="I am an agent that processes and enriches news articles with summaries and categories",
-            description="Agent that processes and enriches news articles",
-            goal="Enhance news articles with categories and summaries"
+            name="Data Processing Agent",
+            role="Data Processor",
+            backstory="I am an agent that processes news articles using AI",
+            description="Agent that processes news articles using AI",
+            goal="Process and enrich news articles with AI"
         )
-        self.es = Elasticsearch(
-            [{'scheme': 'http', 'host': 'localhost', 'port': 9200}],
-            basic_auth= (os.getenv("elastic_username"), os.getenv("elastic_password"))
-        )
+        
+        try:
+            # Get credentials from environment variables
+            elastic_username = os.getenv("elastic_username")
+            elastic_password = os.getenv("elastic_password")
+            
+            if not elastic_username or not elastic_password:
+                raise ValueError("Elasticsearch credentials not found in environment variables")
+            
+            print(f"Attempting to connect with username: {elastic_username}")
+            
+            # Initialize Elasticsearch with Cloud ID
+            self.es = Elasticsearch(
+                cloud_id="news_aggregator:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvJGU1NzU1MDM3OWM4YTQzZTZiZTRjNzQ3NmIwYTlkNmY0JDU1ZWU4ZDQyNTdkYTRhMmY4ZDE4MGZlY2Q4NzRlZTdl",
+                basic_auth=(elastic_username, elastic_password),
+                timeout=30,
+                retry_on_timeout=True,
+                max_retries=3
+            )
+            
+            # Test connection
+            info = self.es.info()
+            print(f"Successfully connected to Elasticsearch version: {info['version']['number']}")
+            
+        except Exception as e:
+            print(f"Error connecting to Elasticsearch: {str(e)}")
+            raise
+        
         try:
             print("Loading NLP models...")
 

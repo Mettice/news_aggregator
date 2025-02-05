@@ -90,15 +90,18 @@ poetry run streamlit run streamlit_app.py
 1. Fork this repository
 2. Sign up for [Streamlit Cloud](https://streamlit.io/cloud)
 3. Create a new app and connect it to your forked repository
-4. Set the following secrets in Streamlit Cloud:
-   - `elastic_username`
-   - `elastic_password`
-   - `news_api_key`
+4. Set up a cloud Elasticsearch instance:
+   ```toml
+   elastic_host = "my-elasticsearch-project-a3bb42.es.us-east-1.aws.elastic.cloud"
+   elastic_port = 443
+   elastic_scheme = "https"
+   elastic_api_key = "your_api_key_here"
+   news_api_key = "your_api_key"
+   ```
 
 ## 🏗️ Project Structure
 
-```
-news-aggregator/
+```news-aggregator/
 ├── data_collection_agent.py  # News collection logic
 ├── data_processing_agent.py  # AI processing logic
 ├── streamlit_app.py         # Web interface
@@ -114,7 +117,6 @@ news-aggregator/
 │   └── config.toml        # Theme configuration
 └── LICENSE                # MIT License
 ```
-
 ## 🌟 Use Cases
 
 1. **Media Monitoring**
@@ -156,6 +158,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ![UI Screenshot](images/ui_screenshot.png)
 
 ### Demo
-![Demo](images/demo.gif)
+![Demo](images/demo.mkv)
+
+
 
 

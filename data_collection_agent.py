@@ -27,17 +27,32 @@ class DataCollectionAgent(Agent):
             goal="Collect and store news articles in Elasticsearch"
         )
         
-        # Get credentials from environment variables
-        elastic_username = os.getenv("elastic_username")
-        elastic_password = os.getenv("elastic_password")
-        
-        if not elastic_username or not elastic_password:
-            raise ValueError("Elasticsearch credentials not found in environment variables")
+        try:
+            # Get credentials from environment variables
+            elastic_username = os.getenv("elastic_username")
+            elastic_password = os.getenv("elastic_password")
             
-        self.es = Elasticsearch(
-            [{'scheme': 'http', 'host': 'localhost', 'port': 9200}],
-            basic_auth=(elastic_username, elastic_password)
-        )
+            if not elastic_username or not elastic_password:
+                raise ValueError("Elasticsearch credentials not found in environment variables")
+            
+            print(f"Attempting to connect with username: {elastic_username}")
+            
+            # Initialize Elasticsearch with Cloud ID
+            self.es = Elasticsearch(
+                cloud_id="news_aggregator:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvJGU1NzU1MDM3OWM4YTQzZTZiZTRjNzQ3NmIwYTlkNmY0JDU1ZWU4ZDQyNTdkYTRhMmY4ZDE4MGZlY2Q4NzRlZTdl",
+                basic_auth=(elastic_username, elastic_password),
+                timeout=30,
+                retry_on_timeout=True,
+                max_retries=3
+            )
+            
+            # Test connection
+            info = self.es.info()
+            print(f"Successfully connected to Elasticsearch version: {info['version']['number']}")
+            
+        except Exception as e:
+            print(f"Error connecting to Elasticsearch: {str(e)}")
+            raise
         
         self.news_api_key = os.getenv("news_api_key")
         if not self.news_api_key:
