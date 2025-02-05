@@ -5,24 +5,55 @@ import pandas as pd
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
-
-# Initialize Elasticsearch client
-es = Elasticsearch(
-    [{'scheme': 'http', 'host': 'localhost', 'port': 9200}],
-    basic_auth=(os.getenv("elastic_username"), os.getenv("elastic_password"))
-)
-
-
-
-# Page configuration
+# Page configuration must be the first Streamlit command
 st.set_page_config(
     page_title="News Aggregator",
     page_icon="📰",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Load environment variables
+load_dotenv()
+
+# Initialize Elasticsearch client with better error handling
+@st.cache_resource
+def init_elasticsearch():
+    try:
+        # First try to get credentials from secrets.toml
+        try:
+            elastic_username = st.secrets["elastic_username"]
+            elastic_password = st.secrets["elastic_password"]
+            es_host = st.secrets.get("elastic_host", "localhost")
+            es_port = st.secrets.get("elastic_port", 9200)
+        except Exception:
+            # Fallback to environment variables
+            elastic_username = os.getenv("elastic_username")
+            elastic_password = os.getenv("elastic_password")
+            es_host = "localhost"
+            es_port = 9200
+
+        if not elastic_username or not elastic_password:
+            st.error("⚠️ Elasticsearch credentials not found in secrets.toml or environment variables.")
+            st.stop()
+
+        es = Elasticsearch(
+            [{'scheme': 'http', 'host': es_host, 'port': es_port}],
+            basic_auth=(elastic_username, elastic_password)
+        )
+
+        # Test connection
+        if not es.ping():
+            st.error("⚠️ Could not connect to Elasticsearch. Please check your configuration.")
+            st.stop()
+
+        return es
+    except Exception as e:
+        st.error(f"⚠️ Error connecting to Elasticsearch: {str(e)}")
+        st.stop()
+
+# Initialize Elasticsearch
+es = init_elasticsearch()
 
 # Custom CSS with improved visibility and dark theme compatibility
 st.markdown("""

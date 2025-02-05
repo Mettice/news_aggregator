@@ -2,7 +2,7 @@
 
 A modern news aggregation system that uses AI to collect, process, and present news articles from various sources in a user-friendly interface.
 
-https://lucid.app/lucidchart/a1914418-460b-4f1d-9673-ee4b55538da5/edit?viewport_loc=-252%2C-282%2C2958%2C1626%2C0_0&invitationId=inv_598547d9-8206-48cb-b28e-bdc8d8f84b89
+
 
 ## 🚀 Features
 
@@ -70,6 +70,7 @@ docker-compose up -d elasticsearch
 
 ## 🚀 Usage
 
+### Local Development
 1. Collect news articles:
 ```bash
 poetry run python data_collection_agent.py
@@ -85,6 +86,15 @@ poetry run python data_processing_agent.py
 poetry run streamlit run streamlit_app.py
 ```
 
+### Streamlit Cloud Deployment
+1. Fork this repository
+2. Sign up for [Streamlit Cloud](https://streamlit.io/cloud)
+3. Create a new app and connect it to your forked repository
+4. Set the following secrets in Streamlit Cloud:
+   - `elastic_username`
+   - `elastic_password`
+   - `news_api_key`
+
 ## 🏗️ Project Structure
 
 ```
@@ -92,8 +102,17 @@ news-aggregator/
 ├── data_collection_agent.py  # News collection logic
 ├── data_processing_agent.py  # AI processing logic
 ├── streamlit_app.py         # Web interface
+├── images/                  # Project images and diagrams
+│   ├── system_architecture.png
+│   ├── ui_screenshot.png
+│   └── demo.gif
 ├── pyproject.toml          # Dependencies
-└── README.md
+├── README.md               # Project documentation
+├── requirements.txt        # Python dependencies
+├── .env.example           # Environment variables template
+├── .streamlit/            # Streamlit configuration
+│   └── config.toml        # Theme configuration
+└── LICENSE                # MIT License
 ```
 
 ## 🌟 Use Cases
@@ -127,3 +146,16 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Elasticsearch](https://www.elastic.co/)
 - [Hugging Face](https://huggingface.co/)
 - [NewsAPI](https://newsapi.org/)
+
+## 📸 Screenshots
+
+### System Architecture
+![System Architecture](images/system_architecture.png)
+
+### User Interface
+![UI Screenshot](images/ui_screenshot.png)
+
+### Demo
+![Demo](images/demo.gif)
+
+

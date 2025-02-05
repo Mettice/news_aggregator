@@ -3,11 +3,11 @@ import requests
 from bs4 import BeautifulSoup
 from elasticsearch import Elasticsearch
 from datetime import datetime
-import logging
 from pydantic import Field, ConfigDict
 from typing import Dict
 import os
 from dotenv import load_dotenv
+
 
 # Load environment variables
 load_dotenv()
