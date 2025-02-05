@@ -1,0 +1,25 @@
+[project]
+name = "news-aggregator"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "mettice",email = "lileospa14@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "transformers[torch] (>=4.48.2,<5.0.0)",
+    "beautifulsoup4 (>=4.13.1,<5.0.0)",
+    "requests (>=2.32.3,<3.0.0)",
+    "streamlit (>=1.41.1,<2.0.0)",
+    "elasticsearch (>=8.17.1,<9.0.0)",
+    "langchain (>=0.3.17,<0.4.0)",
+    "crewai (>=0.100.1,<0.101.0)",
+    "torch (>=2.6.0,<3.0.0)",
+    "python-dotenv (>=1.0.1,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
